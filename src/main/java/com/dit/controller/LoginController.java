@@ -3,6 +3,8 @@ package com.dit.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dit.model.LoginResponse;
 import com.dit.model.User;
 import com.dit.repository.UserRepository;
+import com.dit.service.TokenService;
 
 /**
  * Login Controller
@@ -24,6 +27,12 @@ import com.dit.repository.UserRepository;
 public class LoginController {
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private TokenService tokenService;
+
+	@Value("${cookie.security}")
+	boolean cookieSecurity;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
@@ -45,7 +54,18 @@ public class LoginController {
 				if (foundUser.getPassword().equals(user.getPassword())) {
 					loginResponse.setSucces(true);
 
-					return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
+					// String JWT_TOKEN =
+					// "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+
+					String JWT_TOKEN = tokenService.createToken(foundUser.getUsername());
+					HttpHeaders headers = new HttpHeaders();
+					if (cookieSecurity) {
+						headers.add("Set-Cookie",
+								"default=" + JWT_TOKEN + "; Max-Age=604800; Secure; Path=/; HttpOnly");
+					} else {
+						headers.add("Set-Cookie", "default=" + JWT_TOKEN + "; Max-Age=604800; Path=/; HttpOnly");
+					}
+					return ResponseEntity.status(HttpStatus.OK).headers(headers).body(loginResponse);
 				} else {
 					loginResponse.setSucces(false);
 					loginResponse.setError("Login Failed");
