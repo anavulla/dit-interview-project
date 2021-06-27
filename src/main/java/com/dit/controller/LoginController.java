@@ -1,5 +1,8 @@
 package com.dit.controller;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +57,6 @@ public class LoginController {
 				if (foundUser.getPassword().equals(user.getPassword())) {
 					loginResponse.setSucces(true);
 
-					// String JWT_TOKEN =
-					// "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-
 					String JWT_TOKEN = tokenService.createToken(foundUser.getUsername());
 					HttpHeaders headers = new HttpHeaders();
 					if (cookieSecurity) {
@@ -65,6 +65,12 @@ public class LoginController {
 					} else {
 						headers.add("Set-Cookie", "default=" + JWT_TOKEN + "; Max-Age=604800; Path=/; HttpOnly");
 					}
+
+					// update the last login time for the user
+					foundUser.setLast_login_time(Timestamp.from(Instant.now()));
+					User updatedUser = userRepository.save(foundUser);
+					LOGGER.debug("updated user:" + updatedUser.toString());
+
 					return ResponseEntity.status(HttpStatus.OK).headers(headers).body(loginResponse);
 				} else {
 					loginResponse.setSucces(false);

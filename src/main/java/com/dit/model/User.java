@@ -1,6 +1,6 @@
 package com.dit.model;
 
-import java.sql.Time;
+import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +13,7 @@ import javax.persistence.Id;
  */
 @Entity
 public class User {
+
 	@Override
 	public String toString() {
 		return "User [user_id=" + user_id + ", firstname=" + firstname + ", lastname=" + lastname + ", username="
@@ -28,7 +29,7 @@ public class User {
 	private String username;
 	private String password;
 	private String email;
-	private Time last_login_time;
+	private Timestamp last_login_time;
 
 	public Long getUser_id() {
 		return user_id;
@@ -78,11 +79,11 @@ public class User {
 		this.email = email;
 	}
 
-	public Time getLast_login_time() {
+	public Timestamp getLast_login_time() {
 		return last_login_time;
 	}
 
-	public void setLast_login_time(Time last_login_time) {
+	public void setLast_login_time(Timestamp last_login_time) {
 		this.last_login_time = last_login_time;
 	}
 

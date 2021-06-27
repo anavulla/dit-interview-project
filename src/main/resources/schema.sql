@@ -11,6 +11,6 @@ lastname  VARCHAR(30) NOT NULL,
 username  VARCHAR(25) UNIQUE NOT NULL,
 password  VARCHAR(25) NOT NULL, 
 email     VARCHAR(30), 
-last_login_time TIME, 
+last_login_time TIMESTAMP, 
 PRIMARY KEY (user_id) 
 );
