@@ -52,7 +52,7 @@ This script needs to be executed under `root` user to setup app user, database, 
 
 * `schema.sql`
 
-This script can be executed as part of the application run, update the flag **mysql.schema.file.execute** to ***true*** in `application.prperties`.
+This script can be executed as part of the application run, update the flag **mysql.schema.file.execute** to ***true*** in `application.properties`.
 
 Please make sure that **spring.datasource.username** & **spring.datasource.password** matches with values from `database.sql` if you want to customize them.
 
