@@ -77,6 +77,10 @@ public class LoginController {
 					loginResponse.setError("Login Failed");
 					return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
 				}
+			} else {
+				loginResponse.setSucces(false);
+				loginResponse.setError("Login Failed");
+				return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
 			}
 
 		} catch (Exception e) {
@@ -89,8 +93,6 @@ public class LoginController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(loginResponse);
 
 		}
-		// generic response
-		return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
 
 	}
 

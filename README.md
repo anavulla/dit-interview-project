@@ -5,14 +5,21 @@ This project has been integrated with Swagger UI, once this project is running y
 
 There are Postman project files attached too, if you prefer postman.
 
-To build it, you will need to download and unpack the latest (or recent) version of Maven (https://maven.apache.org/download.cgi)
-and put the `mvn` command on your path.
+To build it, you will need to download and unpack the latest (or recent) version of [Maven](https://maven.apache.org/download.cgi) and put the `mvn` command on your path.
 Then, you will need to install a Java 1.8 JDK, and make sure you can run `java` from the command line.
 
-Now you can clone this project and run `mvn clean install` and Maven will compile the project, run test cases, and generate the jar file in the `target` directory. 
+Now you can clone this project and run 
+```
+mvn clean install
+```
+and Maven will compile the project, run test cases, and generate the jar file in the `target` directory. If you need to skip test cases you can run the following
+```
+mvn clean install -DskipTests
+```
 
 The successful output will look like this:
 
+```
 [INFO] --- maven-install-plugin:2.5.2:install (default-install) @ dit-interview-project ---
 
 [INFO] Installing /home/anavulla/MY_DATA/Work/sts_workspace/dit-interview-project/target/dit-interview-project-0.0.1-SNAPSHOT.jar to /home/anavulla/.m2/repository/com/dit/dit-interview-project/0.0.1-SNAPSHOT/dit-interview-project-0.0.1-SNAPSHOT.jar
@@ -22,15 +29,15 @@ The successful output will look like this:
 [INFO] ------------------------------------------------------------------------
 
 [INFO] BUILD SUCCESS
-
 [INFO] ------------------------------------------------------------------------
 
 [INFO] Total time:  7.299 s
-
+```
 
 You can now go to target folder to launch the app using command line
-> java -jar dit-interview-project-0.0.1-SNAPSHOT.jar
-
+```
+java -jar dit-interview-project-0.0.1-SNAPSHOT.jar
+```
 How you run this code is up to you, but usually you would start by using an IDE like [Eclipse](https://eclipse.org/ide/). The .classpath and .settings are available to run this on IDE.
 
 Once the app is running in your local, you can visit http://localhost:8080 (assuming 8080 is default port) and navigate to [SwaggerUI](http://localhost:8080/swagger-ui.html) for API documentation and running them in the browser.
@@ -69,7 +76,7 @@ This can be updated to modify the issuer name in JWT token.
 
 * `token.ttlMillis`
 
-This can be updated to set the validity of JWT token, this in ***milli seconds***.
+This can be updated to set the validity of JWT token, this in ***milli seconds***. I prefer setting this to shorter timeframe and use refresh token logic to issue new JWT.
 
 * `base64.apikey`
 
@@ -190,14 +197,13 @@ Response body
 }
 ```
 
+>> **Note**: I prefer using different POJOs for ResponseEntitys for customizing further. You can use `@JsonInclude(Include.NON_NULL)` on model fields if you prefer using same ResponseEntity object, this can be observed in Data.java model.
 
 
+## Testing Support
+Test cases are leveraging Junit 5 and Mockito, make sure that you have added Junit 5 library to your class path, it's already available in .classpath file.
 
-
-
-
-
-
-
-
-
+If you need to run test cases separately you can use IDE or command line
+```
+mvn test
+```

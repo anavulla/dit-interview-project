@@ -38,16 +38,24 @@ public class AuthenticateController {
 	 * @return
 	 */
 	@GetMapping(path = "/authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<AuthenticateResponse> create(@RequestHeader Map<String, String> headers) {
+	public ResponseEntity<AuthenticateResponse> authenticate(@RequestHeader Map<String, String> headers) {
 
 		try {
 			LOGGER.debug("Invoking Authentication Controller");
 			LOGGER.debug("All headers: {}", headers);
+
+			/**
+			 * JWT token is expected to be sent in cookie or header; Authorization: Bearer
+			 * header is the preferable way.
+			 * 
+			 * 
+			 * --header 'Authorization: Bearer OR --header 'Cookie: default
+			 **/
+
 			String authorizationHeader = null;
 
 			for (Map.Entry<String, String> entry : headers.entrySet()) {
-				System.out.println(entry.getKey() + "/" + entry.getValue());
-				if (entry.getKey().equals("authorization")) {
+				if (entry.getKey().equalsIgnoreCase("authorization")) {
 					authorizationHeader = entry.getValue();
 					break;
 

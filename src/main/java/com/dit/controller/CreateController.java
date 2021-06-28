@@ -41,7 +41,11 @@ public class CreateController {
 
 		try {
 			LOGGER.debug("Invoking Create Controller");
-			LOGGER.debug("creating user" + user.toString());
+			LOGGER.debug("creating user: " + user.toString());
+			
+			/**
+			 * Password can be hashed and salted before storing in database
+			 */
 
 			User createdUser = userRepository.save(user);
 
